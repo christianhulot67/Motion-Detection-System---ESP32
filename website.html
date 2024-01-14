@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Multi toggle</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+	<script src="script.js"></script>
+	<link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="wrapper">	
+		<div class="progress">
+
+			<a class = "icon1" >
+				<i class="fas fa-4x fa-bath"></i>
+			</a>
+			<div class= "toggle-btn" id="unact">
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+			<div class= "toggle-btn active" id="act" >
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+		<div>
+        <div class = "text">
+            <h1>SETTINGS</h1>
+        </div>
+        <div class = "options">
+            <h1>NOT HOME:</h1>
+            <div class = "o">
+                <h1>HOME:</h1>
+            </div>
+        </div>
+        <div class = "suboptions">
+            <a class = "opt1" >
+				<h1>ALERT:</h1>
+                <div class = "opt4">
+                    <h1>LIGHTS:</h1>
+                </div>
+			</a>
+			<div class= "toggle-btn1" id="unact1">
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+			<div class= "toggle-btn1 active" id="act1" >
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+            <div class= "toggle-btn4" id="unact4">
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+			<div class= "toggle-btn4 active" id="act4" >
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+            <a class = "opt2" >
+				<h1>LIGHTS:</h1>
+			</a>
+			<div class= "toggle-btn2" id="unact2">
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+			<div class= "toggle-btn2 active" id="act2" >
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+            <a class = "opt3" >
+				<h1>OFF:</h1>
+			</a>
+			<div class= "toggle-btn3" id="unact3">
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+			<div class= "toggle-btn3 active" id="act3" >
+				<div class= "inner-circle">
+	
+				</div>
+			</div>
+        </div>
+        <div class = "text">
+            <h1>ALERT HISTORY
+
+                
+            </h1>
+        </div>
+		<div class = "warnings">
+			<div id="1"></div>
+		</div>
+		<div class = "warning">
+			<div id="2"></div>
+		</div>
+		<div class = "warnin">
+			<div id="3"></div>
+		</div>
+		<div class = "warni">
+			<div id="4"></div>
+		</div>
+		<div class = "warn">
+			<div id="5"></div>
+		</div>
+		<div class = "war">
+			<div id="6"></div>
+		</div>
+		<div class = "wa">
+			<div id="7"></div>
+		</div>
+		<div class = "w">
+			<div id="8"></div>
+		</div>
+		<div class = "warningss">
+			<div id="9"></div>
+		</div>
+		<div class = "warningsss">
+			<div id="10"></div>
+		</div>
+	</div>
+	
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+	    
+	<script type="module">
+		// Import the functions you need from the SDKs you need
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+		// TODO: Add SDKs for Firebase products that you want to use
+		// https://firebase.google.com/docs/web/setup#available-libraries
+  
+		// Your web app's Firebase configuration here (Do not use the existing configuration)
+		const firebaseConfig = {
+    		apiKey: "AIzaSyCe28xHGLr-vcPCOJ5HrkwZ-5MCRF1zwYU",
+    		authDomain: "motion-dection-real.firebaseapp.com",
+    		databaseURL: "https://motion-dection-real-default-rtdb.firebaseio.com",
+    		projectId: "motion-dection-real",
+    		storageBucket: "motion-dection-real.appspot.com",
+    		messagingSenderId: "51714103",
+    		appId: "1:51714103:web:1ade313e94df93d36cc7b2",
+    		measurementId: "G-XCL4VBKM54"
+  		};
+  
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+
+		var On_off = 0;
+		var alert = 0;
+		var lights = 0;
+		var sub_off = 1;
+		var home_lights = 0;
+
+		var firebaseRef = firebase.database().ref().child("Dorm/Allowed_Devices");
+		firebaseRef.set("c0:6b:a1:74:07:59");
+		
+		$(document).ready(function(){
+			var firebaseRef = firebase.database().ref().child("Dorm/On_off");
+			document.getElementById("unact").style.display = "block";
+			document.getElementById("act").style.display = "none";
+			firebaseRef.set("0");
+
+			var firebaseRef = firebase.database().ref().child("Dorm/Alert");
+    		document.getElementById("unact1").style.display = "block";
+    		document.getElementById("act1").style.display = "none";
+			firebaseRef.set("0");
+
+			var firebaseRef = firebase.database().ref().child("Dorm/Lights_NotHome");
+    		document.getElementById("unact2").style.display = "block";
+    		document.getElementById("act2").style.display = "none";
+			firebaseRef.set("false");
+
+
+   			document.getElementById("unact3").style.display = "none";
+    		document.getElementById("act3").style.display = "block";
+
+			var firebaseRef = firebase.database().ref().child("Dorm/Lights_Home");
+    		document.getElementById("unact4").style.display = "block";
+    		document.getElementById("act4").style.display = "none";
+			firebaseRef.set("0");
+			
+			$(".toggle-btn").click(function(){
+				var firebaseRef = firebase.database().ref().child("Dorm/On_off");
+				if(On_off == "1"){
+					On_off = "0";
+					document.getElementById("unact").style.display = "block";
+					document.getElementById("act").style.display = "none";
+					firebaseRef.set("0");
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Alert");
+					alert = "0";
+					document.getElementById("unact1").style.display = "block";
+					document.getElementById("act1").style.display = "none";
+					firebaseRef.set("false");
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Lights_NotHome");
+					lights = "0";
+					document.getElementById("unact2").style.display = "block";
+    				document.getElementById("act2").style.display = "none";
+					firebaseRef.set("0");
+
+					sub_off = "1";
+					document.getElementById("unact3").style.display = "none";
+    				document.getElementById("act3").style.display = "block";
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Lights_Home");
+					home_lights = "0";
+					document.getElementById("unact4").style.display = "block";
+    				document.getElementById("act4").style.display = "none";
+					firebaseRef.set("0");
+				} else {
+					On_off = "1";
+					document.getElementById("unact").style.display = "none";
+					document.getElementById("act").style.display = "block";
+					firebaseRef.set("1");
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Alert");
+					alert = "1";
+					document.getElementById("unact1").style.display = "none";
+					document.getElementById("act1").style.display = "block";
+					firebaseRef.set("true");
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Lights_NotHome");
+					lights = "1";
+					document.getElementById("unact2").style.display = "none";
+    				document.getElementById("act2").style.display = "block";
+					firebaseRef.set("1");
+
+					sub_off = "0";
+					document.getElementById("unact3").style.display = "block";
+    				document.getElementById("act3").style.display = "none";
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Lights_Home");
+					home_lights = "1";
+					document.getElementById("unact4").style.display = "none";
+    				document.getElementById("act4").style.display = "block";
+					firebaseRef.set("1");
+				}
+			})
+
+			$(".toggle-btn1").click(function(){
+				var firebaseRef = firebase.database().ref().child("Dorm/Alert");
+				if(alert == "1"){
+					if (lights == 0) {
+						sub_off = "1";
+						document.getElementById("unact3").style.display = "none";
+    					document.getElementById("act3").style.display = "block";
+					}
+					alert = "0";
+					document.getElementById("unact1").style.display = "block";
+    				document.getElementById("act1").style.display = "none";
+					firebaseRef.set("false");
+				} else {
+					if (sub_off == 1) {
+						sub_off = "0";
+						document.getElementById("unact3").style.display = "block";
+    					document.getElementById("act3").style.display = "none";
+					}
+					alert = "1";
+					document.getElementById("unact1").style.display = "none";
+    				document.getElementById("act1").style.display = "block";
+					firebaseRef.set("true");
+				}
+			})
+
+			$(".toggle-btn2").click(function(){
+				var firebaseRef = firebase.database().ref().child("Dorm/Lights_NotHome");
+				if(lights == "1"){
+					if (alert == 0) {
+						sub_off = "1";
+						document.getElementById("unact3").style.display = "none";
+    					document.getElementById("act3").style.display = "block";
+					}
+					lights = "0";
+					document.getElementById("unact2").style.display = "block";
+    				document.getElementById("act2").style.display = "none";
+					firebaseRef.set("0");
+				} else {
+					if (sub_off == 1) {
+						sub_off = "0";
+						document.getElementById("unact3").style.display = "block";
+    					document.getElementById("act3").style.display = "none";
+					}
+					lights = "1";
+					document.getElementById("unact2").style.display = "none";
+    				document.getElementById("act2").style.display = "block";
+					firebaseRef.set("1");
+				}
+			})
+
+			$(".toggle-btn3").click(function(){
+				if(sub_off == "1"){
+					
+					var firebaseRef = firebase.database().ref().child("Dorm/Alert");
+					alert = "1";
+					document.getElementById("unact1").style.display = "none";
+    				document.getElementById("act1").style.display = "block";
+					firebaseRef.set("true");
+
+					var firebaseRef = firebase.database().ref().child("Dorm/Lights_NotHome");
+					lights = "1";
+					document.getElementById("unact2").style.display = "none";
+    				document.getElementById("act2").style.display = "block";
+					firebaseRef.set("true");
+
+					sub_off = "0";
+					document.getElementById("unact3").style.display = "block";
+    				document.getElementById("act3").style.display = "none";
+				} else {
+					if (lights == 1) {
+						var firebaseRef = firebase.database().ref().child("Dorm/Lights_NotHome");
+						lights = "0";
+						document.getElementById("unact2").style.display = "block";
+    					document.getElementById("act2").style.display = "none";
+						firebaseRef.set("false");
+					}
+					if (alert == 1) {
+						var firebaseRef = firebase.database().ref().child("Dorm/Alert");
+						alert = "0";
+						document.getElementById("unact1").style.display = "block";
+    					document.getElementById("act1").style.display = "none";
+						firebaseRef.set("false");
+					}
+					sub_off = "1";
+					document.getElementById("unact3").style.display = "none";
+    				document.getElementById("act3").style.display = "block";
+				}
+			})
+
+			$(".toggle-btn4").click(function(){
+				var firebaseRef = firebase.database().ref().child("Dorm/Lights_Home");
+				if(home_lights == "1"){
+					home_lights = "0";
+					document.getElementById("unact4").style.display = "block";
+    				document.getElementById("act4").style.display = "none";
+					firebaseRef.set("0");
+				} else {
+					home_lights = "1";
+					document.getElementById("unact4").style.display = "none";
+    				document.getElementById("act4").style.display = "block";
+					firebaseRef.set("1");
+				}
+			})
+		});
+
+
+		// getting reference to the database
+		var database = firebase.database();
+    	var movement_home = database.ref('Dorm/Alarm/Home');
+		var movement_not_home = database.ref('Dorm/Alarm/Not_Home');
+		var OnOff = database.ref('Dorm/On_off');
+
+		var one;
+		var two;
+		var three;
+		var four;
+		var five;
+		var six;
+		var seven;
+		var eight;
+		var nine;
+		var ten;
+
+		var count_not_home = 0;
+
+		OnOff.on('value', function(getData3) {
+				var onOrOff = getData3.val();
+				if (onOrOff == 1) {
+					movement_not_home.on('value', function(getData1) {
+						var detection = getData1.val();
+						if (detection == count_not_home) {
+							//Detection was when you were home
+						} else if (alert == 1) {
+							count_not_home = detection;
+							var currentdate = new Date(); 
+							var datetime = "Last Sync: " + currentdate.getDate() + "/"
+								+ (currentdate.getMonth()+1)  + "/" 
+								+ currentdate.getFullYear() + " @ "  
+								+ currentdate.getHours() + ":"  
+								+ currentdate.getMinutes() + ":" 
+								+ currentdate.getSeconds();
+							//document.getElementById('changeMe').innerHTML = detection;
+							//var detection = 1;
+							if (detection == 1) {
+								one = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('1').innerHTML = one;
+							} else if (detection == 2) {
+								two = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('2').innerHTML = two;
+							} else if (detection == 3) {
+								three = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('3').innerHTML = three;
+							} else if (detection == 4) {
+								four = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('4').innerHTML = four;
+							} else if (detection == 5) {
+								five = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('5').innerHTML = five;
+							} else if (detection == 6) {
+								six = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('6').innerHTML = six;
+							} else if (detection == 7) {
+								seven = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('7').innerHTML = seven;
+							} else if (detection == 8) {
+								eight = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('8').innerHTML = eight;
+							} else if (detection == 9) {
+								nine = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('9').innerHTML = nine;
+							} else if (detection == 10) {
+								ten = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('10').innerHTML = ten;
+							} else if (detection > 10) {
+								one = two;
+								two = three;
+								three = four;
+								four = five;
+								five = six;
+								six = seven;
+								seven = eight;
+								eight = nine;
+								nine = ten;
+								ten = "MOVEMENT DETECTED: " + currentdate;
+								document.getElementById('1').innerHTML = one;
+								document.getElementById('2').innerHTML = two;
+								document.getElementById('3').innerHTML = three;
+								document.getElementById('4').innerHTML = four;
+								document.getElementById('5').innerHTML = five;
+								document.getElementById('6').innerHTML = six;
+								document.getElementById('7').innerHTML = seven;
+								document.getElementById('8').innerHTML = eight;
+								document.getElementById('9').innerHTML = nine;
+								document.getElementById('10').innerHTML = ten;
+							}
+						}
+						
+					})
+				}
+			})  
+  
+  
+  
+  
+  
+	  </script>
+</body>
+</html>
